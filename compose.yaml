@@ -1,6 +1,6 @@
 services:
   vaultwarden:
-    image: vaultwarden/server:1.35.2
+    image: vaultwarden/server:1.36.0
     container_name: password-vault
     restart: unless-stopped
     environment:
@@ -22,4 +22,3 @@ services:
       start_period: 20s
     security_opt:
       - no-new-privileges:true
-

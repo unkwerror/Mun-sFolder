@@ -14,7 +14,7 @@ directly to the Internet.
    ssh -p 2222 -L 8080:127.0.0.1:8080 mun@109.174.15.132
    ```
 
-4. Open `http://127.0.0.1:8080`, create the only account, enable 2FA, then set
+4. Open `http://localhost:8080`, create the only account, enable 2FA, then set
    `SIGNUPS_ALLOWED=false` and restart with `docker compose up -d`.
 
 ## Public access
@@ -28,4 +28,3 @@ will be configured after checking existing services and occupied ports.
 The original DOCX contains live credentials and deliberately stays outside this
 repository. Import tooling must not log secrets and will be written only after a
 backup and the initial vault account are ready.
-
