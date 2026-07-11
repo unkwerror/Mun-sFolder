@@ -6,3 +6,5 @@ backups/
 *.docx
 import/
 tls/
+__pycache__/
+*.pyc
