@@ -1,0 +1,25 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:1.35.2
+    container_name: password-vault
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${VAULTWARDEN_DOMAIN:?Set VAULTWARDEN_DOMAIN in .env}
+      SIGNUPS_ALLOWED: ${SIGNUPS_ALLOWED:-false}
+      INVITATIONS_ALLOWED: "false"
+      SHOW_PASSWORD_HINT: "false"
+      WEBSOCKET_ENABLED: "true"
+      LOG_LEVEL: warn
+    ports:
+      - "${VAULTWARDEN_PORT:-127.0.0.1:8080}:80"
+    volumes:
+      - ./data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/alive"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+
