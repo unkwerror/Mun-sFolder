@@ -1,30 +1,19 @@
 # Personal password vault
 
-Single-user Vaultwarden deployment. Until a domain and HTTPS are configured,
-the service binds only to the server loopback interface and must not be exposed
-directly to the Internet.
+Single-user Vaultwarden deployment behind an Nginx HTTPS reverse proxy. The
+container binds only to the server loopback interface.
 
-## First local start
+## Start
 
 1. Copy `.env.example` to `.env` and review every value.
 2. Start with `docker compose up -d`.
-3. Create a TLS certificate for `localhost` in `tls/localhost.crt` and
-   `tls/localhost.key` (the deployment script creates this on the server).
-4. From your computer, create an SSH tunnel:
-
-   ```sh
-   ssh -p 2222 -L 8443:127.0.0.1:8443 mun@109.174.15.132
-   ```
-
-5. Open `https://localhost:8443`, accept the temporary certificate warning,
-   create the only account, enable 2FA, then set
-   `SIGNUPS_ALLOWED=false` and restart with `docker compose up -d`.
+3. Open the configured HTTPS domain. Keep `SIGNUPS_ALLOWED=false` after the sole
+   account has been created.
 
 ## Public access
 
-Do not publish port 8080. Public access will be added only after a domain points
-to the server and a reverse proxy can obtain a valid TLS certificate. The proxy
-will be configured after checking existing services and occupied ports.
+Do not publish port 8080. Nginx terminates TLS and proxies requests to the
+loopback-only Vaultwarden port.
 
 ## Source data
 

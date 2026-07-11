@@ -10,14 +10,12 @@ services:
       SHOW_PASSWORD_HINT: "false"
       WEBSOCKET_ENABLED: "true"
       LOG_LEVEL: warn
-      ROCKET_TLS: '{certs="/tls/localhost.crt",key="/tls/localhost.key"}'
     ports:
       - "${VAULTWARDEN_PORT:-127.0.0.1:8080}:80"
     volumes:
       - ./data:/data
-      - ./tls:/tls:ro
     healthcheck:
-      test: ["CMD", "curl", "-fk", "https://localhost:80/alive"]
+      test: ["CMD", "curl", "-f", "http://localhost/alive"]
       interval: 30s
       timeout: 5s
       retries: 3
