@@ -8,13 +8,16 @@ directly to the Internet.
 
 1. Copy `.env.example` to `.env` and review every value.
 2. Start with `docker compose up -d`.
-3. From your computer, create an SSH tunnel:
+3. Create a TLS certificate for `localhost` in `tls/localhost.crt` and
+   `tls/localhost.key` (the deployment script creates this on the server).
+4. From your computer, create an SSH tunnel:
 
    ```sh
-   ssh -p 2222 -L 8080:127.0.0.1:8080 mun@109.174.15.132
+   ssh -p 2222 -L 8443:127.0.0.1:8443 mun@109.174.15.132
    ```
 
-4. Open `http://localhost:8080`, create the only account, enable 2FA, then set
+5. Open `https://localhost:8443`, accept the temporary certificate warning,
+   create the only account, enable 2FA, then set
    `SIGNUPS_ALLOWED=false` and restart with `docker compose up -d`.
 
 ## Public access
