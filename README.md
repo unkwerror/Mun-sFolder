@@ -28,3 +28,12 @@ will be configured after checking existing services and occupied ports.
 The original DOCX contains live credentials and deliberately stays outside this
 repository. Import tooling must not log secrets and will be written only after a
 backup and the initial vault account are ready.
+
+Generate a local Bitwarden CSV with:
+
+```sh
+python3 scripts/docx_to_bitwarden_csv.py ../сервера.docx import/bitwarden.csv
+```
+
+The generated file is plaintext, has owner-only permissions, and is ignored by
+Git. Delete it immediately after a successful import.
