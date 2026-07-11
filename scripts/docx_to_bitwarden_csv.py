@@ -16,6 +16,11 @@ import zipfile
 from pathlib import Path
 
 NS = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+LABEL_PATTERN = re.compile(
+    r"^\s*(логин|пароль|id|p|имя пользователя|способ авторизации|oc|"
+    r"публичный ip|\*?\s*user|\*?\s*os)\s*:\s*(.*)$",
+    re.I | re.S,
+)
 HEADER = [
     "folder", "favorite", "type", "name", "notes", "fields", "reprompt",
     "login_uri", "login_username", "login_password", "login_totp",
@@ -42,7 +47,7 @@ def split_records(lines: list[str]) -> list[list[str]]:
                 records.append(current)
                 current, has_password = [], False
             continue
-        is_label = bool(re.match(r"^\s*(логин|пароль|id|p|имя пользователя|способ авторизации|oc|публичный ip|\*?\s*user|\*?\s*os)\s*:", line, re.I))
+        is_label = bool(LABEL_PATTERN.match(line))
         if current and has_password and not is_label:
             records.append(current)
             current, has_password = [], False
@@ -57,7 +62,7 @@ def convert(record: list[str], number: int) -> list[str]:
     values: dict[str, str] = {}
     free: list[str] = []
     for line in record:
-        match = re.match(r"^\s*([^:]{1,40})\s*:\s*(.*)$", line, re.S)
+        match = LABEL_PATTERN.match(line)
         if match:
             values[match.group(1).strip().lower().lstrip("* ")] = match.group(2).strip()
         else:
@@ -92,4 +97,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
